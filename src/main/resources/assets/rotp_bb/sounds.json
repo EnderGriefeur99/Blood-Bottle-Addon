@@ -1,3 +1,6 @@
 {
-  
+  "bottle_fill": {
+    "subtitle": "rotp_bb.subtitle.bottle_fill",
+    "sounds": [ "minecraft:entity.player.breath" ]
+  }
 }

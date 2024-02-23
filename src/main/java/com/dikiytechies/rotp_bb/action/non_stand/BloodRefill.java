@@ -1,17 +1,20 @@
 package com.dikiytechies.rotp_bb.action.non_stand;
 
 import com.dikiytechies.rotp_bb.BBAddonConfig;
+import com.dikiytechies.rotp_bb.init.InitSounds;
 import com.dikiytechies.rotp_bb.item.ModItems;
 import com.github.standobyte.jojo.action.ActionConditionResult;
 import com.github.standobyte.jojo.action.ActionTarget;
 import com.github.standobyte.jojo.action.non_stand.NonStandAction;
 import com.github.standobyte.jojo.action.non_stand.VampirismAction;
+import com.github.standobyte.jojo.init.ModSounds;
 import com.github.standobyte.jojo.power.impl.nonstand.INonStandPower;
 import com.github.standobyte.jojo.util.mc.MCUtil;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.world.World;
 
@@ -43,7 +46,7 @@ public class BloodRefill extends VampirismAction {
                 offhandItem.shrink(1);
             }
             power.consumeEnergy((power.getMaxEnergy() / 10) / 100 * BBAddonConfig.fillBottleMultiplier.get());
-            user.playSound(SoundEvents.BOTTLE_FILL, 16f, 1.0F);
+            user.playSound(InitSounds.BOTTLE_FILL.get(), 12.0f, 1.0F);
         }
     }
 
