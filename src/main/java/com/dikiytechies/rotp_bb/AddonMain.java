@@ -2,14 +2,11 @@ package com.dikiytechies.rotp_bb;
 
 import com.dikiytechies.rotp_bb.init.power.non_stand.vampirism.AddonVampirismActions;
 import com.dikiytechies.rotp_bb.item.ModItems;
-import com.dikiytechies.rotp_bb.BBAddonConfig;
 import net.minecraft.item.ItemGroup;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.config.ModConfig;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import com.dikiytechies.rotp_bb.init.InitSounds;
 
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
@@ -38,7 +35,6 @@ public class AddonMain {
         // All DeferredRegister objects are registered here.
         // A DeferredRegister needs to be created for each type of objects that need to be registered in the game 
         // (see ForgeRegistries or JojoCustomRegistries)
-        InitSounds.SOUNDS.register(modEventBus);
         AddonVampirismActions.loadRegistryObjects();
 
     }
