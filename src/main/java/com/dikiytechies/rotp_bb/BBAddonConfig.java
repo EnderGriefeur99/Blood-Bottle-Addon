@@ -20,7 +20,7 @@ public class BBAddonConfig {
         fillBottleMultiplier = BUILDER.comment("\nChanges in percents stored blood value\nrecommended: 1-1000%, Default = 100%")
                 .translation("jojo.config.fillBottleMultiplier")
                 .define("fillBottleMultiplier",100);
-        maxBottleHungerValue = BUILDER.comment("\nChanges in percents max vampire energy bar value till what you can drink\nrecommended: 1-100%, Default = 75%")
+        maxBottleHungerValue = BUILDER.comment("\nChanges in percents max vampire energy bar value till what you can drink\nrecommended: 1-100%, Default = 65%")
                 .translation("jojo.config.maxBottleHungerValue")
                 .define("maxBottleHungerValue",65);
         BUILDER.pop();
