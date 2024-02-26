@@ -8,12 +8,18 @@ import com.github.standobyte.jojo.action.non_stand.NonStandAction;
 import com.github.standobyte.jojo.action.non_stand.VampirismAction;
 import com.github.standobyte.jojo.power.impl.nonstand.INonStandPower;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundEvents;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TextComponent;
 import net.minecraft.world.World;
+
+import java.util.UUID;
 
 import static com.github.standobyte.jojo.client.sound.ClientTickingSoundsHelper.playEntitySound;
 
@@ -38,15 +44,15 @@ public class BloodRefill extends VampirismAction {
         if (!world.isClientSide()) {
             ItemStack offhandItem = user.getOffhandItem();
             PlayerEntity player = (PlayerEntity) user;
-            ItemStack bottle = new ItemStack(ModItems.BOTTLE.get());
-            if (player.getMainHandItem().equals(bottle)){
-                player.addItem(bottle);
-            } else if (player.getMainHandItem() == ItemStack.EMPTY && !player.inventory.contains(bottle)) {
-                player.setItemInHand(Hand.MAIN_HAND, bottle);
+            ItemStack bottle = new ItemStack(ModItems.BOTTLE.get(), 1);
+            boolean avoid = false;
+            if (player.getMainHandItem().isEmpty() && !player.inventory.contains(bottle)) {
+                player.inventory.setItem(player.inventory.getSuitableHotbarSlot(), new ItemStack(ModItems.BOTTLE.get()));
+                avoid = true;
             }
             if (user instanceof PlayerEntity && !player.isCreative()) {
                 offhandItem.shrink(1);
-                if (!player.addItem(bottle)) {
+                if (!avoid && !player.inventory.add(new ItemStack(ModItems.BOTTLE.get()))) {
                     player.drop(bottle, false);
                 }
             }
