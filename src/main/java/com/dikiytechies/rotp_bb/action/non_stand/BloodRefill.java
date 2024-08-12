@@ -23,44 +23,47 @@ import java.util.UUID;
 
 import static com.github.standobyte.jojo.client.sound.ClientTickingSoundsHelper.playEntitySound;
 
-
 public class BloodRefill extends VampirismAction {
-    public BloodRefill(NonStandAction.Builder builder) { super(builder); }
+    public BloodRefill(NonStandAction.Builder builder) {
+        super(builder);
+    }
 
     @Override
-    protected ActionConditionResult checkSpecificConditions(LivingEntity user, INonStandPower power, ActionTarget target) {
+    protected ActionConditionResult checkSpecificConditions(LivingEntity user, INonStandPower power,
+            ActionTarget target) {
         ItemStack offhandItem = user.getOffhandItem();
-        if (!offhandItem.getItem().equals(Items.GLASS_BOTTLE)) {
+        if (!offhandItem.getItem().equals(Items.GLASS_BOTTLE))
             return conditionMessage("no_volume");
-        }
-        if (power.getEnergy() < (power.getMaxEnergy() / 10) / 100 * BBAddonConfig.fillBottleMultiplier.get()) {
+        if (power.getEnergy() < (power.getMaxEnergy() / 10) / 100 * BBAddonConfig.fillBottleMultiplier.get())
             return conditionMessage("no_energy_vampirism");
-        }
+
         return ActionConditionResult.POSITIVE;
     }
 
     @Override
     protected void perform(World world, LivingEntity user, INonStandPower power, ActionTarget target) {
-        if (!world.isClientSide()) {
-            ItemStack offhandItem = user.getOffhandItem();
-            PlayerEntity player = (PlayerEntity) user;
-            ItemStack bottle = new ItemStack(ModItems.BOTTLE.get(), 1);
-            boolean avoid = false;
-            if (player.getMainHandItem().isEmpty() && !player.inventory.contains(bottle)) {
-                player.inventory.setItem(player.inventory.getSuitableHotbarSlot(), new ItemStack(ModItems.BOTTLE.get()));
-                avoid = true;
-            }
-            if (user instanceof PlayerEntity && !player.isCreative()) {
-                offhandItem.shrink(1);
-                if (!avoid && !player.inventory.add(new ItemStack(ModItems.BOTTLE.get()))) {
-                    player.drop(bottle, false);
-                }
-            }
-            power.consumeEnergy((power.getMaxEnergy() / 10) / 100 * BBAddonConfig.fillBottleMultiplier.get());
-            playEntitySound(user, SoundEvents.BOTTLE_FILL, 0.75f, 1.0F, false);
+        if (world.isClientSide())
+            return;
+        ItemStack offhandItem = user.getOffhandItem();
+        PlayerEntity player = (PlayerEntity) user;
+        ItemStack bottle = new ItemStack(ModItems.BOTTLE.get(), 1);
+        boolean avoid = false;
+        if (player.getMainHandItem().isEmpty() && !player.inventory.contains(bottle)) {
+            player.inventory.setItem(player.inventory.getSuitableHotbarSlot(), new ItemStack(ModItems.BOTTLE.get()));
+            avoid = true;
         }
+        if (user instanceof PlayerEntity && !player.isCreative()) {
+            offhandItem.shrink(1);
+            if (!avoid && !player.inventory.add(new ItemStack(ModItems.BOTTLE.get())))
+                player.drop(bottle, false);
+        }
+        power.consumeEnergy((power.getMaxEnergy() / 10) / 100 * BBAddonConfig.fillBottleMultiplier.get());
+        // playEntitySound(user, SoundEvents.BOTTLE_FILL, 0.75f, 1.0F, false);
+
     }
 
     @Override
-    protected int maxCuringStage() { return 3; }
+    protected int maxCuringStage() {
+        return 3;
+    }
 }

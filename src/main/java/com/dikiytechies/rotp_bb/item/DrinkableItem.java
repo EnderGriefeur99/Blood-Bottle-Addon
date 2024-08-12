@@ -30,17 +30,19 @@ import com.github.standobyte.jojo.power.impl.nonstand.INonStandPower;
 import javax.annotation.Nullable;
 import java.util.Optional;
 
-
 public class DrinkableItem extends Item {
     public DrinkableItem(Properties properties) {
         super(properties);
     }
+
     public UseAction getUseAnimation(ItemStack stack) {
         return UseAction.DRINK;
     }
+
     public SoundEvent getDrinkingSound() {
         return SoundEvents.GENERIC_DRINK;
     }
+
     public SoundEvent getEatingSound() {
         return SoundEvents.HONEY_DRINK;
     }
@@ -60,25 +62,23 @@ public class DrinkableItem extends Item {
 
     @Override
     public ItemStack finishUsingItem(ItemStack stack, World world, LivingEntity entityLiving) {
-        super.finishUsingItem(stack,world,entityLiving);
+        super.finishUsingItem(stack, world, entityLiving);
 
         if (INonStandPower.getNonStandPowerOptional(entityLiving).map(
-                targetPower -> targetPower.givePower(ModPowers.VAMPIRISM.get())).orElse(false)) {} // <- world's best code steal
-        INonStandPower power = INonStandPower.getPlayerNonStandPower((PlayerEntity)entityLiving); // <- shitty code
-        power.addEnergy(((power.getMaxEnergy() / 10) - (power.getMaxEnergy() / 1000 * BBAddonConfig.bottleDrinkPenalty.get())) / 100 * BBAddonConfig.fillBottleMultiplier.get());
+                targetPower -> targetPower.givePower(ModPowers.VAMPIRISM.get())).orElse(false)) {
+        } // <- world's best code steal
+        INonStandPower power = INonStandPower.getPlayerNonStandPower((PlayerEntity) entityLiving); // <- shitty code
+        power.addEnergy(
+                ((power.getMaxEnergy() / 10) - (power.getMaxEnergy() / 1000 * BBAddonConfig.bottleDrinkPenalty.get()))
+                        / 100 * BBAddonConfig.fillBottleMultiplier.get());
 
-
-        if (stack.isEmpty()) {
+        if (stack.isEmpty())
             return new ItemStack(EMPTY_BOTTLE);
-        }else {
-            if (entityLiving instanceof PlayerEntity && !((PlayerEntity)entityLiving).isCreative()) {
-                ItemStack itemStack = new ItemStack(EMPTY_BOTTLE);
-                PlayerEntity playerEntity = (PlayerEntity)entityLiving;
-                if (!playerEntity.addItem(itemStack)) {
-                    playerEntity.drop(itemStack, false);
-                }
-            }
-            return stack;
+        if (entityLiving instanceof PlayerEntity && !((PlayerEntity) entityLiving).isCreative()) {
+            ItemStack itemStack = new ItemStack(EMPTY_BOTTLE);
+            PlayerEntity playerEntity = (PlayerEntity) entityLiving;
+            if (!playerEntity.addItem(itemStack)) playerEntity.drop(itemStack, false);
         }
+        return stack;
     }
 }
